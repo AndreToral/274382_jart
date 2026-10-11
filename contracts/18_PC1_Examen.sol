@@ -20,4 +20,17 @@ contract Biblioteca274382 {
         posicion = _posicion;
         direccion = msg.sender;
     }
+
+    function agregarElemento(uint256 _id, string memory _titulo, uint256 _anio, string memory _autor) public {
+        require(_id % 2 == 0, "No se permiten id impares");
+        libros.push(Libro(_id, _titulo, _anio, _autor));
+    }
+
+    function contarElementos() public view returns (uint256) {
+        return libros.length;
+    }
+
+    function cambiarDireccion(address _direccion) public {
+        direccion = _direccion;
+    }
 }
