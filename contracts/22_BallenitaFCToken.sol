@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 
 contract BallenitaFCToken is ERC20, Ownable {
 
+    uint256 public precioToken = 0.001 ether;
+
     constructor() ERC20("Ballenita Fan Token", "BFT") Ownable(msg.sender) {
         _mint(owner(), 1000 * 10 ** decimals());  //forma correcta
     }
@@ -28,5 +30,15 @@ contract BallenitaFCToken is ERC20, Ownable {
 
     function esSocio(address _cuenta) external view returns(bool) {
         return balanceOf(_cuenta) > 0;
+    }
+
+    function comprarTokens() public payable {
+        require(msg.value > 0, "Debes enviar algo de ETH");
+        uint256 cantidadBFT = msg.value / precioToken;
+        _mint(msg.sender, cantidadBFT * 10 ** decimals());
+    }
+
+    function retirar() public onlyOwner {
+        payable(owner()).transfer(address(this).balance);
     }
 }
